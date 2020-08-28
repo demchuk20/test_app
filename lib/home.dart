@@ -43,16 +43,19 @@ class HomeState extends State {
   }
 
   Color _complimentary(Color color) {
-    var red = (~color.red) & 0xff;
-    var green = (~color.green) & 0xff;
-    var blue = (~color.blue) & 0xff;
-    var result = ((((((0xff << 8) | red) << 8) | green) << 8) | blue);
-    return Color(result);
+    var colorText = (~color.value) & 0xffffffff;
+    colorText = colorText | 0xff000000;
+    return Color(colorText);
   }
 
   void _colorChange() {
     setState(() {
-      _color = Color(Random().nextInt(4294967295));
+      Random random = Random();
+      _color = Color.fromARGB(
+          random.nextInt(0xff + 0x1),
+          random.nextInt(0xff + 0x1),
+          random.nextInt(0xff + 0x1),
+          random.nextInt(0xff + 0x1));
       _textColor = _complimentary(_color);
     });
   }
